@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 style: TextStyle(
                   fontSize: 60,
                   fontWeight: FontWeight.w900,
-                  fontFamily: 'Cursive', 
+                  fontFamily: 'Cursive',
                   color: Colors.teal,
                 ),
               ),
