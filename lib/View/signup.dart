@@ -27,15 +27,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     height: 40,
                     width: 40,
-                    child: Image.asset(
-                      'assets/images/icon.png',
-                    ), // your logo path
+                    child: Image.asset('assets/images/icon.png'),
                   ),
                   Row(
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context); // Back to Login
+                          Navigator.pop(context);
                         },
                         child: const Text(
                           'Sign In',
