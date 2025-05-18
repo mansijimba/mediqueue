@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mediqueue/View/login.dart';
-import 'package:mediqueue/View/signup.dart';
 import 'package:mediqueue/View/splashscreen.dart';
 
 class MyApp extends StatelessWidget {
@@ -14,7 +13,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        //   '/home': (context) => LoginPage(), // replace with your real home screen
+        '/home': (context) => LoginPage(), // replace with your real home screen
       },
     );
   }
