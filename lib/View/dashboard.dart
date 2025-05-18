@@ -95,7 +95,7 @@ class Dashboard extends StatelessWidget {
                         CircleAvatar(
                           radius: 35,
                           backgroundImage: AssetImage(
-                            'assets/doctor.png',
+                            'assets/doctor.jpg',
                           ), // Replace with your asset
                         ),
                         SizedBox(width: 16),
