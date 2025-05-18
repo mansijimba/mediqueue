@@ -34,20 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
 
-          // Centered overlay (logo, text, loader)
-          Positioned(
-            top: 90,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: SizedBox(
-                height: 100,
-                width: 100,
-                child: Image.asset('assets/images/logo.png'),
-              ),
-            ),
-          ),
-
           // Title, subtitle, and progress bar at the bottom
           Positioned(
             bottom: 60,
