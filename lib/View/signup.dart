@@ -27,15 +27,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   SizedBox(
                     height: 40,
                     width: 40,
-                    child: Image.asset(
-                      'assets/images/splash.png',
-                    ), // your logo path
+                    child: Image.asset('assets/images/icon.png'),
                   ),
                   Row(
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context); // Back to Login
+                          Navigator.pop(context);
                         },
                         child: const Text(
                           'Sign In',
@@ -59,7 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
 
               // Heading
               const Text(
@@ -151,7 +149,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 value: _selectedUserType,
                 items: const [
                   DropdownMenuItem(value: 'Doctor', child: Text('Doctor')),
-                  DropdownMenuItem(value: 'User', child: Text('User')),
+                  DropdownMenuItem(value: 'Patient', child: Text('Patient')),
                 ],
                 onChanged: (value) {
                   setState(() {

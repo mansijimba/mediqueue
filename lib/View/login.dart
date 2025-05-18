@@ -48,7 +48,10 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
+
                               builder: (context) => SignUpPage(),
+
+
                             ),
                           );
                         },
@@ -64,7 +67,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 60),
 
-              // Welcome Back Text
               const Text(
                 'Welcome',
                 style: TextStyle(
@@ -119,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Dashboard()),
+         
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -137,7 +140,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 16),
 
-              // Forgot Password
               Center(
                 child: TextButton(
                   onPressed: () {},
