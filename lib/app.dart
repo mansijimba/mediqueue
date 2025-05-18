@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/home': (context) => LoginPage(), // replace with your real home screen
+        '/home': (context) => LoginPage(),
+
       },
     );
   }

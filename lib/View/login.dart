@@ -13,7 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7FBF7), // Light minty background
+      backgroundColor: const Color(0xFFF7FBF7),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 56),
@@ -48,7 +48,10 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const SignUpPage(),
+
+                              builder: (context) => SignUpPage(),
+
+
                             ),
                           );
                         },
@@ -115,11 +118,10 @@ class _LoginPageState extends State<LoginPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const Dashboard(),
-                      ),
+                      MaterialPageRoute(builder: (context) => Dashboard()),
+         
                     );
                   },
                   style: ElevatedButton.styleFrom(
