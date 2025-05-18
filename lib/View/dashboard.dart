@@ -72,7 +72,7 @@ class Dashboard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                   image: const DecorationImage(
                     image: AssetImage(
-                      'assets/banner.jpg',
+                      'assets/images/banner.jpg',
                     ), // Ensure this image exists
                     fit: BoxFit.cover,
                   ),
@@ -138,7 +138,7 @@ class Dashboard extends StatelessWidget {
                         const CircleAvatar(
                           radius: 35,
                           backgroundImage: AssetImage(
-                            'assets/doctor.jpg',
+                            'assets/images/doctor.jpg',
                           ), // Ensure this exists
                         ),
                         const SizedBox(width: 16),
@@ -146,7 +146,7 @@ class Dashboard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
                             Text(
-                              'Dr. Andrea Kim',
+                              'Dr. Andrea Kosh',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,

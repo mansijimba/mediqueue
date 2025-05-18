@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mediqueue/View/dashboard.dart';
+import 'package:mediqueue/View/signup.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,7 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7FBF7), // Light minty background
+      backgroundColor: const Color(0xFFF7FBF7),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 56),
@@ -42,7 +44,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(width: 8),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpPage(),
+                            ),
+                          );
+                        },
                         child: const Text(
                           'Sign Up',
                           style: TextStyle(color: Color(0xFF00796B)),
@@ -106,7 +115,12 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Dashboard()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.teal,
                     shape: RoundedRectangleBorder(
