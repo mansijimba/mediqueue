@@ -48,10 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-
                               builder: (context) => SignUpPage(),
-
-
                             ),
                           );
                         },
@@ -121,7 +118,6 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Dashboard()),
-         
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -145,7 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {},
                   child: const Text(
                     'Forgot Password?',
-                    style: TextStyle(color: Colors.black87),
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontFamily: 'OpenSans Bold',
+                    ),
                   ),
                 ),
               ),

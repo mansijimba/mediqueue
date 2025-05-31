@@ -4,7 +4,7 @@ ThemeData getApplicationTheme() {
   return ThemeData(
     useMaterial3: false,
     primarySwatch: Colors.teal,
-    fontFamily: 'OpenSans Italic',
+    fontFamily: 'OpenSans Regular',
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         textStyle: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
