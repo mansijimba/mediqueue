@@ -1,8 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:mediqueue/app/constant/hive_table_constant.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
 import 'package:uuid/uuid.dart';
 
+part 'user_hive_model.g.dart';
+
+@HiveType(typeId: HiveTableConstant.userTableId)
 class UserHiveModel extends Equatable {
   @HiveField(0)
   final String? userId;
