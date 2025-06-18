@@ -18,7 +18,10 @@ class UserEntity extends Equatable {
   });
   
   @override
+<<<<<<< HEAD
   // TODO: implement props
+=======
+>>>>>>> d1f10134d971b4ac9ebb425477890296f4fed059
   List<Object?> get props => [
     userId,
     fullName,
