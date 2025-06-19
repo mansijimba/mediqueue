@@ -1,6 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:mediqueue/app.dart';
+import 'package:flutter/widgets.dart';
 
-void main() {
+import 'package:mediqueue/app/app.dart';
+import 'package:mediqueue/app/service_locator/service_locator.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize dependencies and HiveService together
+  await initDependencies();
+
   runApp(MyApp());
 }

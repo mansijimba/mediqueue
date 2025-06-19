@@ -19,4 +19,22 @@ class UserLocalRepository implements IUserRepository {
       return Left(LocalDatabaseFailure(message: "Failed to register: $e"));
     }
   }
+
+  @override
+  Future<Either<Failure, UserEntity>> getCurrentUser() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> loginUser(
+    String email,
+    String password,
+  ) async {
+    try {
+      final result = await _userLocalDatasource.loginUser(email, password);
+      return Right(result);
+    } catch (e) {
+      return Left(LocalDatabaseFailure(message: "Failed to login: $e"));
+    }
+  }
 }

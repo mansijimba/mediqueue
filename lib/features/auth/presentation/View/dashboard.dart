@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mediqueue/View/appointment.dart';
-import 'package:mediqueue/View/home.dart';
-import 'package:mediqueue/View/profile.dart';
+import 'package:mediqueue/features/auth/presentation/View/appointment.dart';
+import 'package:mediqueue/features/auth/presentation/View/home.dart';
+import 'package:mediqueue/features/auth/presentation/View/profile.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});

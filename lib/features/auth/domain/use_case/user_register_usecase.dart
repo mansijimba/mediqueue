@@ -7,14 +7,12 @@ import 'package:mediqueue/features/auth/domain/repository/user_repository.dart';
 
 class RegisterUserParams extends Equatable {
   final String fullName;
-  final String userName;
   final String phone;
   final String email;
   final String password;
 
   const RegisterUserParams({
     required this.fullName,
-    required this.userName,
     required this.phone,
     required this.email,
     required this.password,
@@ -23,14 +21,13 @@ class RegisterUserParams extends Equatable {
   //initial constructor
   const RegisterUserParams.initial({
     required this.fullName,
-    required this.userName,
     required this.phone,
     required this.email,
     required this.password,
   });
 
   @override
-  List<Object?> get props => [fullName, userName, phone, email, password];
+  List<Object?> get props => [fullName, phone, email, password];
 }
 
 class UserRegisterUsecase
@@ -44,7 +41,6 @@ class UserRegisterUsecase
   Future<Either<Failure, void>> call(RegisterUserParams params) {
     final userEntity = UserEntity(
       fullName: params.fullName,
-      userName: params.userName,
       phone: params.phone,
       email: params.email,
       password: params.password,
@@ -52,3 +48,4 @@ class UserRegisterUsecase
     return _userRepository.registerUser(userEntity);
   }
 }
+

@@ -19,10 +19,9 @@ class UserHiveModelAdapter extends TypeAdapter<UserHiveModel> {
     return UserHiveModel(
       userId: fields[0] as String?,
       fullName: fields[1] as String,
-      userName: fields[2] as String,
-      phone: fields[3] as String,
-      email: fields[4] as String,
-      password: fields[5] as String,
+      phone: fields[2] as String,
+      email: fields[3] as String,
+      password: fields[4] as String,
     );
   }
 
@@ -35,12 +34,10 @@ class UserHiveModelAdapter extends TypeAdapter<UserHiveModel> {
       ..writeByte(1)
       ..write(obj.fullName)
       ..writeByte(2)
-      ..write(obj.userName)
-      ..writeByte(3)
       ..write(obj.phone)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.email)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.password);
   }
 

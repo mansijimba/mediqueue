@@ -28,4 +28,25 @@ class HiveService {
     var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
     return box.values.toList();
   }
+
+  //Login using email and passowrd
+  Future<UserHiveModel?> login(String email, String password) async {
+    var box = await Hive.openBox<UserHiveModel>(HiveTableConstant.userBox);
+    var user = box.values.firstWhere(
+      (element) => element.email == email && element.password == password,
+      orElse: () => throw Exception('Invalid username or password'),
+    );
+    box.close();
+    return user;
+  }
+
+  //Clear all data and delete database
+  Future<void> clearAll() async {
+    await Hive.deleteFromDisk();
+    await Hive.deleteBoxFromDisk(HiveTableConstant.userBox);
+  }
+
+  Future<void> close() async {
+    await Hive.close();
+  }
 }
