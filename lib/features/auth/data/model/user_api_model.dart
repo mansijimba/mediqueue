@@ -1,43 +1,37 @@
 import 'package:equatable/equatable.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:mediqueue/app/constant/hive_table_constant.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
 import 'package:uuid/uuid.dart';
 
-part 'user_hive_model.g.dart';
+part 'user_api_model.g.dart';
 
-@HiveType(typeId: HiveTableConstant.userTableId)
-class UserHiveModel extends Equatable {
-  @HiveField(0)
+@JsonSerializable()
+class UserApiModel extends Equatable {
+  @JsonKey(name: '_id')
   final String? userId;
-  @HiveField(1)
   final String fullName;
-  @HiveField(2)
   final String phone;
-  @HiveField(3)
   final String email;
-  @HiveField(4)
   final String password;
 
-  UserHiveModel({
-    String? userId,
+  const UserApiModel({
+    this.userId,
     required this.fullName,
     required this.phone,
     required this.email,
     required this.password,
-  }) : userId = userId ?? const Uuid().v4();
+  });
 
-  //Initial Constructor
-  const UserHiveModel.initial()
-    : userId = '',
-      fullName = '',
-      phone = '',
-      email = '',
-      password = '';
+  factory UserApiModel.fromJson(Map<String, dynamic> json) =>
+      _$UserApiModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserApiModelToJson(this);
 
   //From Entity
-  factory UserHiveModel.fromEntity(UserEntity entity) {
-    return UserHiveModel(
+  factory UserApiModel.fromEntity(UserEntity entity) {
+    return UserApiModel(
       userId: entity.userId,
       fullName: entity.fullName,
       phone: entity.phone,
