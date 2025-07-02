@@ -6,18 +6,19 @@ class ApiEndpoints {
   static const receiveTimeout = Duration(seconds: 1000);
 
   //For Android Emulator
-  static const String serverAddress = "http://10.0.2.2:3000";
+  static const String serverAddress = "http://10.0.2.2:5050";
+  static const String baseUrl = "$serverAddress/api/auth";
   // For iOS Simulator
   // static const String serverAddress = "http://localhost:3000";
 
   // For iPhone (uncomment if needed)
-  static const String baseUrl = "$serverAddress/api/v1/";
-  static const String imageUrl = "$baseUrl/uploads/";
+  // static const String baseUrl = "$serverAddress/api/v1/";
+  // static const String imageUrl = "$baseUrl/uploads/";
 
   // Auth
-  static const String login = "auth/login";
-  static const String register = "auth/register";
-  static const String getAllUser = "auth/getAllUser";
-  static const String updateUser = "auth/updateUser/";
-  static const String deleteUser = "auth/deleteUser/";
+  static const String login = "login";
+  static const String register = "register";
+  static const String getAllUser = "getAllUser";
+  static const String updateUser = "updateUser/";
+  static const String deleteUser = "deleteUser/";
 }

@@ -10,7 +10,7 @@ class ApiService {
 
   ApiService(this._dio) {
     _dio
-      ..options.baseUrl = ApiEndpoints.baseUrl
+      ..options.baseUrl = ApiEndpoints.baseUrl 
       ..options.connectTimeout = ApiEndpoints.connectionTimeout
       ..options.receiveTimeout = ApiEndpoints.receiveTimeout
       ..interceptors.add(DioErrorInterceptor())

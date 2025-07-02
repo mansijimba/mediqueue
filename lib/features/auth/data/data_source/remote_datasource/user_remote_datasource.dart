@@ -1,8 +1,9 @@
-import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:mediqueue/app/constant/api_endpoints.dart';
 import 'package:mediqueue/core/network/api_service.dart';
 import 'package:mediqueue/features/auth/data/data_source/user_data_source.dart';
+import 'package:mediqueue/features/auth/data/model/user_api_model.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
 
 
@@ -12,11 +13,11 @@ class UserRemoteDatasource implements IUserDataSource {
     : _apiService = apiService;
 
   @override
-  Future<String> loginUser(String username, String password) async {
+  Future<String> loginUser(String email, String password) async {
     try {
       final response = await _apiService.dio.post(
         ApiEndpoints.login,
-        data: {'username': username, 'password': password},
+        data: {'email': email, 'password': password},
       );
       if (response.statusCode == 200) {
         final str = response.data['token'];
@@ -25,12 +26,12 @@ class UserRemoteDatasource implements IUserDataSource {
         throw Exception(response.statusMessage);
       }
     } on DioException catch (e) {
-      throw Exception('Failed to login student: ${e.message}');
+      throw Exception('Failed to login user: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to login student: $e');
+      throw Exception('Failed to login user: $e');
     }
   }
-  
+
   @override
   Future<void> registerUser(UserEntity userData) async {
     try {
@@ -43,13 +44,19 @@ class UserRemoteDatasource implements IUserDataSource {
         return;
       } else {
         throw Exception(
-          'Failed to register student: ${response.statusMessage}',
+          'Failed to register user: ${response.statusMessage}',
         );
       }
     } on DioException catch (e) {
-      throw Exception('Failed to register student: ${e.message}');
+      throw Exception('Failed to register user: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to register student: $e');
+      throw Exception('Failed to register user: $e');
     }
+  }
+  
+  @override
+  Future<UserEntity> getCurrentUser() {
+  
+    throw UnimplementedError();
   }
 }

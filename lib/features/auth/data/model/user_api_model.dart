@@ -1,9 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:mediqueue/app/constant/hive_table_constant.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
-import 'package:uuid/uuid.dart';
 
 part 'user_api_model.g.dart';
 
@@ -27,7 +24,13 @@ class UserApiModel extends Equatable {
   factory UserApiModel.fromJson(Map<String, dynamic> json) =>
       _$UserApiModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserApiModelToJson(this);
+ Map<String, dynamic> toJson() {
+  final json = _$UserApiModelToJson(this);
+  if (json['_id'] == null) {
+    json.remove('_id');
+  }
+  return json;
+}
 
   //From Entity
   factory UserApiModel.fromEntity(UserEntity entity) {

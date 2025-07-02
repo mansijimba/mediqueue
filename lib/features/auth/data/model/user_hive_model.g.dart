@@ -28,7 +28,7 @@ class UserHiveModelAdapter extends TypeAdapter<UserHiveModel> {
   @override
   void write(BinaryWriter writer, UserHiveModel obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.userId)
       ..writeByte(1)

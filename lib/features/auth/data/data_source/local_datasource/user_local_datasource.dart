@@ -32,5 +32,11 @@ class UserLocalDatasource implements IUserDataSource {
       throw Exception("Login Failed: $e");
     }
   }
+  
+  @override
+  Future<UserEntity> getCurrentUser() {
+    // TODO: implement getCurrentUser
+    throw UnimplementedError();
+  }
 
 }
