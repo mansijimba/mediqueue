@@ -1,11 +1,9 @@
-
 import 'package:dio/dio.dart';
 import 'package:mediqueue/app/constant/api_endpoints.dart';
 import 'package:mediqueue/core/network/api_service.dart';
 import 'package:mediqueue/features/auth/data/data_source/user_data_source.dart';
 import 'package:mediqueue/features/auth/data/model/user_api_model.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
-
 
 class UserRemoteDatasource implements IUserDataSource {
   final ApiService _apiService;
@@ -19,7 +17,7 @@ class UserRemoteDatasource implements IUserDataSource {
         ApiEndpoints.login,
         data: {'email': email, 'password': password},
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final str = response.data['token'];
         return str;
       } else {
@@ -40,12 +38,10 @@ class UserRemoteDatasource implements IUserDataSource {
         ApiEndpoints.register,
         data: userApiModel.toJson(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return;
       } else {
-        throw Exception(
-          'Failed to register user: ${response.statusMessage}',
-        );
+        throw Exception('Failed to register user: ${response.statusMessage}');
       }
     } on DioException catch (e) {
       throw Exception('Failed to register user: ${e.message}');
@@ -53,10 +49,9 @@ class UserRemoteDatasource implements IUserDataSource {
       throw Exception('Failed to register user: $e');
     }
   }
-  
+
   @override
   Future<UserEntity> getCurrentUser() {
-  
     throw UnimplementedError();
   }
 }

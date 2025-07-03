@@ -16,9 +16,9 @@ class ApiEndpoints {
   // static const String imageUrl = "$baseUrl/uploads/";
 
   // Auth
-  static const String login = "login";
-  static const String register = "register";
-  static const String getAllUser = "getAllUser";
-  static const String updateUser = "updateUser/";
-  static const String deleteUser = "deleteUser/";
+  static const String login = "/login";
+  static const String register = "/register";
+  static const String getAllUser = "/getAllUser";
+  static const String updateUser = "/updateUser/";
+  static const String deleteUser = "/deleteUser/";
 }

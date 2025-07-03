@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediqueue/app/service_locator/service_locator.dart';
 import 'package:mediqueue/core/common/snackbar/my_snackbar.dart';
 import 'package:mediqueue/features/auth/domain/use_case/user_login_usecase.dart';
+import 'package:mediqueue/features/auth/presentation/View/dashboard.dart';
 import 'package:mediqueue/features/auth/presentation/View/signup.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/login_view_model.dart/login_event.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/login_view_model.dart/login_state.dart';
@@ -14,7 +15,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   LoginViewModel(this._userLoginUsecase) : super(LoginState.initial()) {
     on<NavigateToRegisterViewEvent>(_onNavigateToRegisterView);
     on<LoginWithEmailAndPasswordEvent>(_onLoginWithEmailAndPassword);
-    on<NavigateToHomeViewEvent>(_onNavigateToHomeView);
+    // on<NavigateToHomeViewEvent>(_onNavigateToHomeView);
   }
 
   void _onNavigateToRegisterView(
@@ -25,14 +26,15 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       Navigator.push(
         event.context,
         MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: serviceLocator<RegisterViewModel>(),
+          builder:
+              (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: serviceLocator<RegisterViewModel>(),
+                  ),
+                ],
+                child: const SignUpPage(),
               ),
-            ],
-            child: const SignUpPage(),
-          ),
         ),
       );
     }
@@ -42,46 +44,48 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     LoginWithEmailAndPasswordEvent event,
     Emitter<LoginState> emit,
   ) async {
+    print(
+      'Attempting login with email: ${event.email}, password: ${event.password}',
+    );
     emit(state.copyWith(isLoading: true));
 
     final result = await _userLoginUsecase(
-      LoginParams(email: event.email, password: event.password),
+      LoginParams(email: event.email.trim(), password: event.password.trim()),
     );
 
     result.fold(
       (failure) {
-        // Handle failure case
+        print('Login failed: ${failure.message}');
         emit(state.copyWith(isLoading: false, isSuccess: false));
-
         showMySnackBar(
           context: event.context,
-          message: 'Invalid credentials. Please try again.',
+          message: failure.message ?? 'Invalid credentials. Please try again.',
           color: Colors.red,
         );
       },
       (token) {
-        // ✅ Success snackbar
+        print('Login successful: Token = $token');
+        emit(state.copyWith(isLoading: false, isSuccess: true));
         showMySnackBar(
           context: event.context,
-          message: 'Login successful!',
+          message: "Login Successful",
           color: Colors.green,
         );
-
-        // Handle success case
-        emit(state.copyWith(isLoading: false, isSuccess: true));
-
-        // Navigate to home/dashboard
-        add(NavigateToHomeViewEvent(context: event.context));
+        Navigator.pushReplacement(
+          event.context,
+          MaterialPageRoute(builder: (_) => DashboardScreen()),
+        );
       },
     );
   }
-
-  void _onNavigateToHomeView(
-    NavigateToHomeViewEvent event,
-    Emitter<LoginState> emit,
-  ) {
-    if (event.context.mounted) {
-      Navigator.pushReplacementNamed(event.context, '/dashboard');
-    }
-  }
 }
+
+//   void _onNavigateToHomeView(
+//     NavigateToHomeViewEvent event,
+//     Emitter<LoginState> emit,
+//   ) {
+//     if (event.context.mounted) {
+//       Navigator.pushReplacementNamed(event.context, '/dashboard');
+//     }
+//   }
+// }
