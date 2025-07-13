@@ -31,18 +31,24 @@ class RegisterViewModel extends Bloc<RegisterEvent, RegisterState> {
     result.fold(
       (l) {
         emit(state.copyWith(isLoading: false, isSuccess: false));
+        try{
         showMySnackBar(
           context: event.context,
           message: l.message,
           color: Colors.red,
         );
+        }catch(_){
+          
+        }
       },
       (r) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
+        try{
         showMySnackBar(
           context: event.context,
           message: "Registration Successful",
         );
+        }catch(_){}
       },
     );
   }

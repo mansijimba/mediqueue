@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mediqueue/app/shared_pref/token_shared_prefs.dart';
 import 'package:mediqueue/core/network/api_service.dart';
 import 'package:mediqueue/core/network/hive_service.dart';
 import 'package:mediqueue/features/auth/data/data_source/local_datasource/user_local_datasource.dart';
@@ -65,7 +66,8 @@ Future<void> _initAuthModule() async {
 
   serviceLocator.registerFactory(
     () => UserLoginUsecase(
-      userRepository: serviceLocator<UserRemoteRepository>()
+      userRepository: serviceLocator<UserRemoteRepository>(),
+      tokenSharedPrefs: serviceLocator<TokenSharedPrefs>(),
       ),
   );
 

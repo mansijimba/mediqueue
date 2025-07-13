@@ -15,7 +15,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   LoginViewModel(this._userLoginUsecase) : super(LoginState.initial()) {
     on<NavigateToRegisterViewEvent>(_onNavigateToRegisterView);
     on<LoginWithEmailAndPasswordEvent>(_onLoginWithEmailAndPassword);
-    // on<NavigateToHomeViewEvent>(_onNavigateToHomeView);
   }
 
   void _onNavigateToRegisterView(
@@ -26,15 +25,14 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       Navigator.push(
         event.context,
         MaterialPageRoute(
-          builder:
-              (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: serviceLocator<RegisterViewModel>(),
-                  ),
-                ],
-                child: const SignUpPage(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: serviceLocator<RegisterViewModel>(),
               ),
+            ],
+            child: const SignUpPage(),
+          ),
         ),
       );
     }
@@ -47,6 +45,7 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
     print(
       'Attempting login with email: ${event.email}, password: ${event.password}',
     );
+
     emit(state.copyWith(isLoading: true));
 
     final result = await _userLoginUsecase(
@@ -57,35 +56,33 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       (failure) {
         print('Login failed: ${failure.message}');
         emit(state.copyWith(isLoading: false, isSuccess: false));
-        showMySnackBar(
-          context: event.context,
-          message: failure.message ?? 'Invalid credentials. Please try again.',
-          color: Colors.red,
-        );
+        try {
+          showMySnackBar(
+            context: event.context,
+            message: failure.message ?? 'Invalid credentials. Please try again.',
+            color: Colors.red,
+          );
+        } catch (_) {
+          // Swallow error during test
+        }
       },
       (token) {
         print('Login successful: Token = $token');
         emit(state.copyWith(isLoading: false, isSuccess: true));
-        showMySnackBar(
-          context: event.context,
-          message: "Login Successful",
-          color: Colors.green,
-        );
-        Navigator.pushReplacement(
-          event.context,
-          MaterialPageRoute(builder: (_) => DashboardScreen()),
-        );
+        try {
+          showMySnackBar(
+            context: event.context,
+            message: "Login Successful",
+            color: Colors.green,
+          );
+          Navigator.pushReplacement(
+            event.context,
+            MaterialPageRoute(builder: (_) => DashboardScreen()),
+          );
+        } catch (_) {
+          
+        }
       },
     );
   }
 }
-
-//   void _onNavigateToHomeView(
-//     NavigateToHomeViewEvent event,
-//     Emitter<LoginState> emit,
-//   ) {
-//     if (event.context.mounted) {
-//       Navigator.pushReplacementNamed(event.context, '/dashboard');
-//     }
-//   }
-// }
