@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mediqueue/app/service_locator/service_locator.dart';
+import 'package:mediqueue/app/shared_pref/token_shared_prefs.dart';
 import 'package:mediqueue/core/common/snackbar/my_snackbar.dart';
+import 'package:mediqueue/features/auth/domain/use_case/user_get_current_usecase.dart';
 import 'package:mediqueue/features/auth/domain/use_case/user_login_usecase.dart';
-import 'package:mediqueue/features/auth/presentation/View/dashboard.dart';
 import 'package:mediqueue/features/auth/presentation/View/signup.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/login_view_model.dart/login_event.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/login_view_model.dart/login_state.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/register_view_model.dart/register_view_model.dart';
+import 'package:mediqueue/features/home/presentation/view/home_view.dart';
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   final UserLoginUsecase _userLoginUsecase;
@@ -25,14 +27,15 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       Navigator.push(
         event.context,
         MaterialPageRoute(
-          builder: (context) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(
-                value: serviceLocator<RegisterViewModel>(),
+          builder:
+              (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: serviceLocator<RegisterViewModel>(),
+                  ),
+                ],
+                child: const SignUpPage(),
               ),
-            ],
-            child: const SignUpPage(),
-          ),
         ),
       );
     }
@@ -52,36 +55,48 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       LoginParams(email: event.email.trim(), password: event.password.trim()),
     );
 
-    result.fold(
-      (failure) {
-        print('Login failed: ${failure.message}');
+    await result.fold(
+      (failure) async {
         emit(state.copyWith(isLoading: false, isSuccess: false));
-        try {
-          showMySnackBar(
-            context: event.context,
-            message: failure.message ?? 'Invalid credentials. Please try again.',
-            color: Colors.red,
-          );
-        } catch (_) {
-          // Swallow error during test
-        }
+        showMySnackBar(
+          context: event.context,
+          message: failure.message ?? 'Invalid credentials',
+          color: Colors.red,
+        );
       },
-      (token) {
-        print('Login successful: Token = $token');
-        emit(state.copyWith(isLoading: false, isSuccess: true));
-        try {
-          showMySnackBar(
-            context: event.context,
-            message: "Login Successful",
-            color: Colors.green,
-          );
-          Navigator.pushReplacement(
-            event.context,
-            MaterialPageRoute(builder: (_) => DashboardScreen()),
-          );
-        } catch (_) {
-          
-        }
+      (token) async {
+        await serviceLocator<TokenSharedPrefs>().saveToken(token);
+
+        final userResult = await serviceLocator<UserGetCurrentUsecase>().call();
+
+        await userResult.fold(
+          (failure) async {
+            emit(state.copyWith(isLoading: false, isSuccess: false));
+            showMySnackBar(
+              context: event.context,
+              message: 'Failed to get user: ${failure.message}',
+              color: Colors.red,
+            );
+          },
+          (user) async {
+            emit(state.copyWith(isLoading: false, isSuccess: true));
+            showMySnackBar(
+              context: event.context,
+              message: 'Login Successful',
+              color: Colors.green,
+            );
+
+            Navigator.pushReplacement(
+              event.context,
+              MaterialPageRoute(
+                builder:
+                    (_) => DashboardScreen(
+                      patientId: user.userId!,
+                    ), // This works here
+              ),
+            );
+          },
+        );
       },
     );
   }

@@ -1,24 +1,27 @@
 class ApiEndpoints {
   ApiEndpoints._();
 
-  // Timeouts
   static const connectionTimeout = Duration(seconds: 1000);
   static const receiveTimeout = Duration(seconds: 1000);
 
-  //For Android Emulator
   static const String serverAddress = "http://10.0.2.2:5050";
-  static const String baseUrl = "$serverAddress/api/auth";
-  // For iOS Simulator
-  // static const String serverAddress = "http://localhost:3000";
-
-  // For iPhone (uncomment if needed)
-  // static const String baseUrl = "$serverAddress/api/v1/";
-  // static const String imageUrl = "$baseUrl/uploads/";
+  static const String baseUrl = "$serverAddress/api";
 
   // Auth
-  static const String login = "/login";
-  static const String register = "/register";
-  static const String getAllUser = "/getAllUser";
-  static const String updateUser = "/updateUser/";
-  static const String deleteUser = "/deleteUser/";
+  static const String login = "/auth/login";
+  static const String register = "/auth/register";
+  static const String getCurrentUser = "/auth/profile";
+  static const String updateUser = "/auth/updateUser/";
+
+  // Doctor
+  static const String getAllDoctor = "/doctor/";
+  static const String getDoctorById = "/doctor/";
+
+  //Appointment
+  static const String bookAppointment = "/appointment/book";
+  static const String getAppointments = "/appointment/";
+  static const String cancelAppointment = "/appointment/";
+
+  //queue
+  static const String getQueueStatus = "/queue/status";
 }

@@ -14,14 +14,35 @@ class UserEntity extends Equatable {
     required this.email,
     required this.password,
   });
-  
+
   @override
   List<Object?> get props => [
-    userId,
-    fullName,
-    phone,
-    email,
-    password
-  ];
-  
+        userId,
+        fullName,
+        phone,
+        email,
+        password,
+      ];
+
+  /// Factory method to create UserEntity from JSON
+  factory UserEntity.fromJson(Map<String, dynamic> json) {
+    return UserEntity(
+      userId: json['userId'] as String?,
+      fullName: json['fullName'] as String,
+      phone: json['phone'] as String,
+      email: json['email'] as String,
+      password: json['password'] as String,
+    );
+  }
+
+  /// Method to convert UserEntity to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      if (userId != null) 'userId': userId,
+      'fullName': fullName,
+      'phone': phone,
+      'email': email,
+      'password': password,
+    };
+  }
 }
