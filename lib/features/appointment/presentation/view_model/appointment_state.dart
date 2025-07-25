@@ -17,11 +17,11 @@ class AppointmentState extends Equatable {
   });
 
   const AppointmentState.initial()
-      : isLoading = false,
-        isSuccess = false,
-        appointments = const [],
-        lastBookedAppointment = null,
-        errorMessage = null;
+    : isLoading = false,
+      isSuccess = false,
+      appointments = const [],
+      lastBookedAppointment = null,
+      errorMessage = null;
 
   AppointmentState copyWith({
     bool? isLoading,
@@ -34,11 +34,18 @@ class AppointmentState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       appointments: appointments ?? this.appointments,
-      lastBookedAppointment: lastBookedAppointment ?? this.lastBookedAppointment,
-      errorMessage: errorMessage,
+      lastBookedAppointment:
+          lastBookedAppointment ?? this.lastBookedAppointment,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object?> get props => [isLoading, isSuccess, appointments, lastBookedAppointment, errorMessage];
+  List<Object?> get props => [
+    isLoading,
+    isSuccess,
+    appointments,
+    lastBookedAppointment,
+    errorMessage,
+  ];
 }

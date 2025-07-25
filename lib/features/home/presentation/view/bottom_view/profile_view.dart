@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mediqueue/features/auth/data/data_source/remote_datasource/user_remote_datasource.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
+import 'package:mediqueue/features/home/presentation/view_model/home_view_model.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -111,6 +113,19 @@ class _ProfileViewState extends State<ProfileView> {
                       _user!.phone,
                       style: const TextStyle(fontSize: 18),
                     ),
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      final vm = context.read<HomeViewModel>();
+                      if (vm.currentContext != null) {
+                        print('Manual logout triggered');
+                        vm.logout(vm.currentContext!);
+                      } else {
+                        print('currentContext is null!');
+                      }
+                    },
+                    child: Text('Test Logout'),
                   ),
                 ],
               ),

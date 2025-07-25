@@ -9,7 +9,7 @@ import 'package:mediqueue/features/auth/presentation/View/signup.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/login_view_model.dart/login_event.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/login_view_model.dart/login_state.dart';
 import 'package:mediqueue/features/auth/presentation/view_model/register_view_model.dart/register_view_model.dart';
-import 'package:mediqueue/features/home/presentation/view/home_view.dart';
+import 'package:mediqueue/features/home/presentation/view/main_dashboard_entry_view.dart';
 
 class LoginViewModel extends Bloc<LoginEvent, LoginState> {
   final UserLoginUsecase _userLoginUsecase;
@@ -27,15 +27,14 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
       Navigator.push(
         event.context,
         MaterialPageRoute(
-          builder:
-              (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: serviceLocator<RegisterViewModel>(),
-                  ),
-                ],
-                child: const SignUpPage(),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: serviceLocator<RegisterViewModel>(),
               ),
+            ],
+            child: const SignUpPage(),
+          ),
         ),
       );
     }
@@ -89,15 +88,23 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
             Navigator.pushReplacement(
               event.context,
               MaterialPageRoute(
-                builder:
-                    (_) => DashboardScreen(
-                      patientId: user.userId!,
-                    ), // This works here
+                builder: (_) => MainDashboardEntry(
+                  patientId: user.userId!,
+                ),
               ),
             );
           },
         );
       },
     );
+  }
+
+  // New logout method
+  Future<void> logout() async {
+    // Clear saved token
+    await serviceLocator<TokenSharedPrefs>().clearToken();
+
+    // Reset the login state (optional, you can create a separate loggedOut state if needed)
+    emit(LoginState.initial());
   }
 }

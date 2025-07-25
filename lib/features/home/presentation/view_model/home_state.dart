@@ -10,7 +10,7 @@ import 'package:mediqueue/features/home/presentation/view/bottom_view/profile_vi
 class HomeState {
   final int selectedIndex;
   final List<Widget> views;
-  final bool isLoggingOut; // 🆕 added for shake-based logout
+  final bool isLoggingOut;
 
   const HomeState({
     required this.selectedIndex,
@@ -18,7 +18,8 @@ class HomeState {
     required this.isLoggingOut,
   });
 
-  static HomeState initial() {
+  // Initial state with default selectedIndex=0 and views injected from serviceLocator
+  factory HomeState.initial() {
     return HomeState(
       selectedIndex: 0,
       views: [
@@ -32,14 +33,15 @@ class HomeState {
         ),
         const ProfileView(),
       ],
-      isLoggingOut: false, // 🆕 initialize to false
+      isLoggingOut: false,
     );
   }
 
+  // Create a new copy with optional updates
   HomeState copyWith({
     int? selectedIndex,
     List<Widget>? views,
-    bool? isLoggingOut, // 🆕 allow copying with new logout state
+    bool? isLoggingOut,
   }) {
     return HomeState(
       selectedIndex: selectedIndex ?? this.selectedIndex,
