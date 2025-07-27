@@ -47,38 +47,44 @@ class DoctorApiModel extends Equatable {
   }
 
   // To Entity
-DoctorEntity toEntity() {
-  const String baseUrl = 'http://10.0.2.2:5050'; // Your backend base URL
+  DoctorEntity toEntity() {
+    const String baseUrl = 'http://192.168.1.67:5050'; // Your backend base URL
 
-  String? fullFilepath;
-  if (filepath == null || filepath!.isEmpty) {
-    fullFilepath = null;
-  } else if (filepath!.startsWith('http')) {
-    // Already a full URL, use as is
-    fullFilepath = filepath;
-  } else {
-    // Normalize slashes: replace backslash with forward slash
-    String normalizedPath = filepath!.replaceAll(r'\', '/');
+    String? fullFilepath;
+    if (filepath == null || filepath!.isEmpty) {
+      fullFilepath = null;
+    } else if (filepath!.startsWith('http')) {
+      // Already a full URL, use as is
+      fullFilepath = filepath;
+    } else {
+      // Normalize slashes: replace backslash with forward slash
+      String normalizedPath = filepath!.replaceAll(r'\', '/');
 
-    // Ensure there is exactly one slash between baseUrl and normalizedPath
-    if (!normalizedPath.startsWith('/')) {
-      normalizedPath = '/$normalizedPath';
+      // Ensure there is exactly one slash between baseUrl and normalizedPath
+      if (!normalizedPath.startsWith('/')) {
+        normalizedPath = '/$normalizedPath';
+      }
+
+      fullFilepath = baseUrl + normalizedPath;
     }
 
-    fullFilepath = baseUrl + normalizedPath;
+    return DoctorEntity(
+      id: id ?? '',
+      name: name,
+      specialty: specialty,
+      availability: availability,
+      appointments: appointments,
+      filepath: fullFilepath,
+    );
   }
 
-  return DoctorEntity(
-    id: id ?? '',
-    name: name,
-    specialty: specialty,
-    availability: availability,
-    appointments: appointments,
-    filepath: fullFilepath,
-  );
-}
-
-
   @override
-  List<Object?> get props => [id, name, specialty, availability, appointments, filepath];
+  List<Object?> get props => [
+    id,
+    name,
+    specialty,
+    availability,
+    appointments,
+    filepath,
+  ];
 }

@@ -1,9 +1,13 @@
+import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:sensors_plus/sensors_plus.dart'; // <-- else use this for accelerometer
 import 'package:mediqueue/features/auth/data/data_source/remote_datasource/user_remote_datasource.dart';
 import 'package:mediqueue/features/auth/domain/entity/user_entity.dart';
 import 'package:mediqueue/features/home/presentation/view_model/home_view_model.dart';
+import 'package:mediqueue/features/home/presentation/view_model/home_event.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -17,13 +21,65 @@ class _ProfileViewState extends State<ProfileView> {
   bool _loading = true;
   String? _error;
 
-  late final UserRemoteDatasource _userRemoteDatasource;
+  final UserRemoteDatasource _userRemoteDatasource =
+      GetIt.instance<UserRemoteDatasource>();
+
+  // For accelerometer stream subscription
+  StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
+  DateTime? _lastShakeTime;
+  static const double shakeThreshold = 2.5;
 
   @override
   void initState() {
     super.initState();
-    _userRemoteDatasource = GetIt.instance<UserRemoteDatasource>();
     _loadUserProfile();
+
+    _accelerometerSubscription = accelerometerEvents.listen((event) {
+      final now = DateTime.now();
+
+      final double accelerationMagnitude = sqrt(
+        event.x * event.x + event.y * event.y + event.z * event.z,
+      );
+
+      final double adjusted = (accelerationMagnitude - 9.8).abs();
+
+      print(
+        'x: ${event.x}, y: ${event.y}, z: ${event.z}, '
+        'raw: $accelerationMagnitude, adjusted: $adjusted',
+      );
+
+      if (adjusted > shakeThreshold) {
+        if (_lastShakeTime == null ||
+            now.difference(_lastShakeTime!) > const Duration(seconds: 1)) {
+          _lastShakeTime = now;
+          print('Shake detected! Logging out...');
+          _handleShakeLogout();
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _accelerometerSubscription?.cancel();
+    super.dispose();
+  }
+
+  void _handleShakeLogout() {
+    print('Shake detected! Logging out...');
+
+    final homeViewModel = context.read<HomeViewModel>();
+    final logoutContext = homeViewModel.currentContext;
+
+    if (logoutContext != null) {
+      context.read<HomeViewModel>().add(LogoutRequested(logoutContext));
+
+      ScaffoldMessenger.of(logoutContext).showSnackBar(
+        const SnackBar(content: Text('Logout triggered by shake!')),
+      );
+    } else {
+      debugPrint('Shake detected, but currentContext is null!');
+    }
   }
 
   Future<void> _loadUserProfile() async {
@@ -114,18 +170,35 @@ class _ProfileViewState extends State<ProfileView> {
                       style: const TextStyle(fontSize: 18),
                     ),
                   ),
-
-                  ElevatedButton(
-                    onPressed: () {
-                      final vm = context.read<HomeViewModel>();
-                      if (vm.currentContext != null) {
-                        print('Manual logout triggered');
-                        vm.logout(vm.currentContext!);
-                      } else {
-                        print('currentContext is null!');
-                      }
-                    },
-                    child: Text('Test Logout'),
+                  const SizedBox(height: 20),
+                  Center(
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.teal,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        final homeViewModel = context.read<HomeViewModel>();
+                        if (homeViewModel.currentContext != null) {
+                          context.read<HomeViewModel>().add(
+                            LogoutRequested(homeViewModel.currentContext!),
+                          );
+                        } else {
+                          debugPrint('Warning: currentContext is null!');
+                        }
+                      },
+                      icon: const Icon(Icons.logout),
+                      label: const Text(
+                        'Logout',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
                   ),
                 ],
               ),

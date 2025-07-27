@@ -1,14 +1,11 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'package:mediqueue/features/doctor/presentation/view/doctor_list_view.dart';
 import 'package:mediqueue/features/home/presentation/view/bottom_view/appointment_view.dart';
 import 'package:mediqueue/features/home/presentation/view/bottom_view/profile_view.dart';
 import 'package:mediqueue/features/home/presentation/view_model/home_state.dart';
 import 'package:mediqueue/features/home/presentation/view_model/home_view_model.dart';
+import 'package:mediqueue/features/home/presentation/view_model/home_event.dart'; // 👈 Important: import events
 
 class DashboardScreen extends StatefulWidget {
   final String patientId;
@@ -29,46 +26,10 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  StreamSubscription? _accelerometerSubscription;
-  DateTime _lastShakeTime = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    _startListeningToShake();
-  }
-
-  void _startListeningToShake() {
-    const double shakeThreshold = 15.0;
-
-    _accelerometerSubscription = accelerometerEvents.listen((
-      AccelerometerEvent event,
-    ) {
-      double acceleration = sqrt(
-        event.x * event.x + event.y * event.y + event.z * event.z,
-      );
-
-      if (acceleration > shakeThreshold) {
-        final now = DateTime.now();
-        if (now.difference(_lastShakeTime) > const Duration(seconds: 2)) {
-          _lastShakeTime = now;
-          context.read<HomeViewModel>().logout(context);
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _accelerometerSubscription?.cancel();
-    super.dispose();
-  }
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<HomeViewModel>().setContext(context);
-     print("Context set in HomeViewModel");
+    context.read<HomeViewModel>().setContext(context); // For logout functionality
   }
 
   @override
@@ -172,42 +133,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               unselectedLabelStyle: const TextStyle(fontSize: 12),
               elevation: 20,
-              onTap:
-                  (index) => context.read<HomeViewModel>().onTabTapped(index),
-              items:
-                  DashboardScreen._bottomNavItems.map((item) {
-                    final selected =
-                        state.selectedIndex ==
-                        DashboardScreen._bottomNavItems.indexOf(item);
-                    return BottomNavigationBarItem(
-                      icon: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          gradient:
-                              selected
-                                  ? LinearGradient(
-                                    colors: [
-                                      Colors.teal.shade100,
-                                      Colors.teal.shade300,
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                  : null,
-                        ),
-                        child: Icon(
-                          (item.icon as Icon).icon,
-                          color:
-                              selected
-                                  ? Colors.teal.shade800
-                                  : Colors.grey.shade600,
-                          size: 28,
-                        ),
-                      ),
-                      label: item.label,
-                    );
-                  }).toList(),
+              onTap: (index) {
+                context.read<HomeViewModel>().add(TabChanged(index)); // ✅ DISPATCH EVENT
+              },
+              items: DashboardScreen._bottomNavItems.map((item) {
+                final selected = state.selectedIndex ==
+                    DashboardScreen._bottomNavItems.indexOf(item);
+                return BottomNavigationBarItem(
+                  icon: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      gradient: selected
+                          ? LinearGradient(
+                              colors: [
+                                Colors.teal.shade100,
+                                Colors.teal.shade300,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            )
+                          : null,
+                    ),
+                    child: Icon(
+                      (item.icon as Icon).icon,
+                      color: selected ? Colors.teal.shade800 : Colors.grey.shade600,
+                      size: 28,
+                    ),
+                  ),
+                  label: item.label,
+                );
+              }).toList(),
             ),
           ),
         );

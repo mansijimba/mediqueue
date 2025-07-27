@@ -87,7 +87,7 @@ LF:1
 LH:0
 end_of_record
 SF:lib\app\service_locator\service_locator.dart
-DA:36,0
+DA:36,3
 DA:38,0
 DA:39,0
 DA:40,0
@@ -196,7 +196,7 @@ DA:241,0
 DA:242,0
 DA:243,0
 LF:108
-LH:0
+LH:1
 end_of_record
 SF:lib\app\shared_pref\token_shared_prefs.dart
 DA:8,0
@@ -1032,7 +1032,7 @@ LH:3
 end_of_record
 SF:lib\features\appointment\presentation\view_model\appointment_state.dart
 DA:11,2
-DA:19,10
+DA:19,11
 DA:26,1
 DA:33,1
 DA:34,0
@@ -1095,7 +1095,7 @@ LF:13
 LH:0
 end_of_record
 SF:lib\features\auth\presentation\View\signup.dart
-DA:8,17
+DA:8,19
 DA:10,0
 DA:11,0
 DA:22,0
@@ -1152,7 +1152,7 @@ LF:1
 LH:1
 end_of_record
 SF:lib\features\auth\presentation\View\login.dart
-DA:8,16
+DA:8,18
 DA:10,0
 DA:11,0
 DA:19,0
@@ -1310,7 +1310,7 @@ LF:16
 LH:0
 end_of_record
 SF:lib\features\doctor\presentation\view\doctor_list_view.dart
-DA:13,16
+DA:13,18
 DA:15,0
 DA:16,0
 DA:20,0
@@ -1393,7 +1393,7 @@ LH:2
 end_of_record
 SF:lib\features\doctor\presentation\view_model\doctor_state.dart
 DA:10,2
-DA:17,8
+DA:17,9
 DA:23,1
 DA:29,1
 DA:30,0
@@ -1405,7 +1405,7 @@ LF:9
 LH:8
 end_of_record
 SF:lib\features\home\presentation\view\bottom_view\appointment_view.dart
-DA:11,9
+DA:11,10
 DA:12,0
 DA:14,1
 DA:15,1
@@ -1495,7 +1495,7 @@ LF:43
 LH:0
 end_of_record
 SF:lib\features\home\presentation\view\bottom_view\profile_view.dart
-DA:9,16
+DA:9,18
 DA:11,0
 DA:12,0
 DA:22,0
@@ -1551,7 +1551,7 @@ LF:52
 LH:1
 end_of_record
 SF:lib\features\home\presentation\view\home_view.dart
-DA:16,0
+DA:16,1
 DA:27,0
 DA:28,0
 DA:35,0
@@ -1625,15 +1625,15 @@ DA:204,0
 DA:208,0
 DA:210,0
 LF:73
-LH:0
+LH:1
 end_of_record
 SF:lib\features\home\presentation\view_model\home_state.dart
 DA:15,0
-DA:22,0
+DA:22,1
 DA:23,0
 DA:25,0
 DA:26,0
-DA:27,0
+DA:27,2
 DA:30,0
 DA:31,0
 DA:41,0
@@ -1642,7 +1642,7 @@ DA:47,0
 DA:48,0
 DA:49,0
 LF:13
-LH:0
+LH:2
 end_of_record
 SF:lib\features\queue\domain\entity\queue_entity.dart
 DA:9,0
@@ -1692,7 +1692,7 @@ LF:6
 LH:0
 end_of_record
 SF:lib\features\queue\presentation\view_model\queue_state.dart
-DA:10,8
+DA:10,9
 DA:17,0
 DA:26,0
 DA:32,0

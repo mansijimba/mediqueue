@@ -94,4 +94,31 @@ void main() {
       },
     );
   });
+
+  blocTest<DoctorListViewModel, DoctorListState>(
+  'emits [loading, success] with empty list when no doctors found',
+  build: () {
+    when(() => mockUsecase()).thenAnswer((_) async => const Right([]));
+    return viewModel;
+  },
+  act: (bloc) => bloc.add(FetchDoctors()),
+  expect: () => [
+    const DoctorListState(
+      isLoading: true,
+      isSuccess: false,
+      errorMessage: null,
+      doctors: [],
+    ),
+    const DoctorListState(
+      isLoading: false,
+      isSuccess: true,
+      errorMessage: null,
+      doctors: [],
+    ),
+  ],
+  verify: (_) {
+    verify(() => mockUsecase()).called(1);
+  },
+);
+
 }

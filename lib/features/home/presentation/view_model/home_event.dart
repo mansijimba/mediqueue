@@ -1,10 +1,15 @@
+import 'package:flutter/material.dart';
+
 abstract class HomeEvent {}
 
-class TabTapped extends HomeEvent {
+class TabChanged extends HomeEvent {
   final int index;
-  TabTapped(this.index);
+
+  TabChanged(this.index);
 }
 
-class LogoutRequested extends HomeEvent {}
+class LogoutRequested extends HomeEvent {
+  final BuildContext context;
 
-class ShakeDetected extends HomeEvent {}
+  LogoutRequested(this.context);
+}
