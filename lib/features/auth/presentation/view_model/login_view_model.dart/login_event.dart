@@ -26,3 +26,9 @@ class LoginWithEmailAndPasswordEvent extends LoginEvent {
     required this.password,
   });
 }
+
+class LoginWithFingerprintEvent extends LoginEvent {
+  final BuildContext context;
+
+  LoginWithFingerprintEvent({required this.context});
+}

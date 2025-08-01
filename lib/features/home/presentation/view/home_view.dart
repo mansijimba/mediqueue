@@ -5,7 +5,7 @@ import 'package:mediqueue/features/home/presentation/view/bottom_view/appointmen
 import 'package:mediqueue/features/home/presentation/view/bottom_view/profile_view.dart';
 import 'package:mediqueue/features/home/presentation/view_model/home_state.dart';
 import 'package:mediqueue/features/home/presentation/view_model/home_view_model.dart';
-import 'package:mediqueue/features/home/presentation/view_model/home_event.dart'; // 👈 Important: import events
+import 'package:mediqueue/features/home/presentation/view_model/home_event.dart';
 
 class DashboardScreen extends StatefulWidget {
   final String patientId;
@@ -26,18 +26,45 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  String _getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) return "Good Morning";
+    if (hour < 17) return "Good Afternoon";
+    return "Good Evening";
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    context.read<HomeViewModel>().setContext(context); // For logout functionality
+    context.read<HomeViewModel>().setContext(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeViewModel, HomeState>(
       builder: (context, state) {
+        // Wrap DoctorListScreen with heading message
+        final homeView = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+              child: Text(
+                "Take the first step toward better health book your appointment now.",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal,
+                  height: 1.3,
+                ),
+              ),
+            ),
+            const Expanded(child: DoctorListScreen()),
+          ],
+        );
+
         final views = [
-          const DoctorListScreen(),
+          homeView,
           AppointmentListView(patientId: widget.patientId),
           const ProfileView(),
         ];
@@ -45,11 +72,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return Scaffold(
           backgroundColor: Colors.teal.shade50,
           appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(70),
+            preferredSize: const Size.fromHeight(90),
             child: AppBar(
               automaticallyImplyLeading: false,
-              backgroundColor: Colors.teal.shade700,
-              elevation: 8,
+              backgroundColor: Colors.teal.shade600,
+              elevation: 10,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(30),
@@ -57,47 +84,55 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               title: Row(
                 children: [
-                  Material(
-                    elevation: 8,
-                    shape: const CircleBorder(),
-                    clipBehavior: Clip.antiAlias,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      radius: 24,
+                  CircleAvatar(
+                    radius: 26,
+                    backgroundColor: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
                       child: Image.asset(
                         'assets/images/logo.png',
-                        width: 34,
-                        height: 34,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Text(
-                    'MediQueue',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900,
-                      fontSize: 26,
-                      letterSpacing: 1.5,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black45,
-                          offset: Offset(1, 1),
-                          blurRadius: 3,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _getGreeting(),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.white70,
                         ),
-                      ],
-                    ),
+                      ),
+                      const Text(
+                        'MediQueue',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.notifications, color: Colors.white),
+                  onPressed: () {},
+                ),
+                const SizedBox(width: 8),
+              ],
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Card(
-              elevation: 6,
-              shadowColor: Colors.teal.shade200,
+              elevation: 8,
+              shadowColor: Colors.teal.shade100,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(24),
               ),
@@ -114,9 +149,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.teal.shade200.withOpacity(0.4),
-                  blurRadius: 15,
-                  spreadRadius: 5,
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, -2),
                 ),
               ],
             ),
@@ -132,38 +167,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 fontSize: 13,
               ),
               unselectedLabelStyle: const TextStyle(fontSize: 12),
-              elevation: 20,
+              elevation: 15,
               onTap: (index) {
-                context.read<HomeViewModel>().add(TabChanged(index)); // ✅ DISPATCH EVENT
+                context.read<HomeViewModel>().add(TabChanged(index));
               },
-              items: DashboardScreen._bottomNavItems.map((item) {
-                final selected = state.selectedIndex ==
-                    DashboardScreen._bottomNavItems.indexOf(item);
-                return BottomNavigationBarItem(
-                  icon: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      gradient: selected
-                          ? LinearGradient(
-                              colors: [
-                                Colors.teal.shade100,
-                                Colors.teal.shade300,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            )
-                          : null,
-                    ),
-                    child: Icon(
-                      (item.icon as Icon).icon,
-                      color: selected ? Colors.teal.shade800 : Colors.grey.shade600,
-                      size: 28,
-                    ),
-                  ),
-                  label: item.label,
-                );
-              }).toList(),
+              items:
+                  DashboardScreen._bottomNavItems.map((item) {
+                    final selected =
+                        state.selectedIndex ==
+                        DashboardScreen._bottomNavItems.indexOf(item);
+                    return BottomNavigationBarItem(
+                      icon: AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        padding: const EdgeInsets.all(8),
+                        decoration:
+                            selected
+                                ? BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.teal.shade100,
+                                      Colors.teal.shade300,
+                                    ],
+                                  ),
+                                )
+                                : null,
+                        child: Icon(
+                          (item.icon as Icon).icon,
+                          color:
+                              selected
+                                  ? Colors.teal.shade800
+                                  : Colors.grey.shade600,
+                          size: 26,
+                        ),
+                      ),
+                      label: item.label,
+                    );
+                  }).toList(),
             ),
           ),
         );

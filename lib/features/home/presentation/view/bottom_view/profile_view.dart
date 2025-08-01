@@ -27,7 +27,7 @@ class _ProfileViewState extends State<ProfileView> {
   // For accelerometer stream subscription
   StreamSubscription<AccelerometerEvent>? _accelerometerSubscription;
   DateTime? _lastShakeTime;
-  static const double shakeThreshold = 2.5;
+  static const double shakeThreshold = 4.5;
 
   @override
   void initState() {
@@ -42,11 +42,6 @@ class _ProfileViewState extends State<ProfileView> {
       );
 
       final double adjusted = (accelerationMagnitude - 9.8).abs();
-
-      print(
-        'x: ${event.x}, y: ${event.y}, z: ${event.z}, '
-        'raw: $accelerationMagnitude, adjusted: $adjusted',
-      );
 
       if (adjusted > shakeThreshold) {
         if (_lastShakeTime == null ||
@@ -160,7 +155,7 @@ class _ProfileViewState extends State<ProfileView> {
                     leading: const Icon(Icons.email, color: Colors.teal),
                     title: Text(
                       _user!.email,
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 17),
                     ),
                   ),
                   ListTile(
@@ -171,35 +166,6 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Center(
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      onPressed: () {
-                        final homeViewModel = context.read<HomeViewModel>();
-                        if (homeViewModel.currentContext != null) {
-                          context.read<HomeViewModel>().add(
-                            LogoutRequested(homeViewModel.currentContext!),
-                          );
-                        } else {
-                          debugPrint('Warning: currentContext is null!');
-                        }
-                      },
-                      icon: const Icon(Icons.logout),
-                      label: const Text(
-                        'Logout',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),

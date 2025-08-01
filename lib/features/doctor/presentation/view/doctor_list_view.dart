@@ -27,12 +27,10 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) =>
-              serviceLocator<DoctorListViewModel>()..add(FetchDoctors()),
+          create:
+              (_) => serviceLocator<DoctorListViewModel>()..add(FetchDoctors()),
         ),
-        BlocProvider(
-          create: (_) => serviceLocator<AppointmentViewModel>(),
-        ),
+        BlocProvider(create: (_) => serviceLocator<AppointmentViewModel>()),
       ],
       child: BlocBuilder<DoctorListViewModel, DoctorListState>(
         builder: (context, state) {
@@ -50,7 +48,6 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
           }
 
           if (state.isSuccess && state.doctors.isNotEmpty) {
-            
             return ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               itemCount: state.doctors.length,
@@ -71,13 +68,13 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                         children: [
                           doctor.filepath != null
                               ? CircleAvatar(
-                                  radius: 32,
-                                  backgroundImage: NetworkImage(doctor.filepath!),
-                                )
+                                radius: 32,
+                                backgroundImage: NetworkImage(doctor.filepath!),
+                              )
                               : const CircleAvatar(
-                                  radius: 32,
-                                  child: Icon(Icons.person, size: 36),
-                                ),
+                                radius: 32,
+                                child: Icon(Icons.person, size: 36),
+                              ),
                           const SizedBox(width: 20),
                           Expanded(
                             child: Column(
@@ -88,7 +85,7 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                                   doctor.name,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     color: Colors.black87,
                                   ),
                                 ),
@@ -127,15 +124,20 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BlocProvider.value(
-                                        value: context.read<AppointmentViewModel>(),
-                                        child: BookAppointmentScreen(
-                                          doctorId: doctor.id,
-                                          patientId: user.userId!,
-                                          doctorGetByIdUsecase:
-                                              doctorGetByIdUsecase,
-                                        ),
-                                      ),
+                                      builder:
+                                          (context) => BlocProvider.value(
+                                            value:
+                                                context
+                                                    .read<
+                                                      AppointmentViewModel
+                                                    >(),
+                                            child: BookAppointmentScreen(
+                                              doctorId: doctor.id,
+                                              patientId: user.userId!,
+                                              doctorGetByIdUsecase:
+                                                  doctorGetByIdUsecase,
+                                            ),
+                                          ),
                                     ),
                                   );
                                 },

@@ -63,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SignUpPage()),
+                                builder: (context) => const SignUpPage(),
+                              ),
                             );
                           },
                           child: const Text(
@@ -145,12 +146,12 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         context.read<LoginViewModel>().add(
-                              LoginWithEmailAndPasswordEvent(
-                                context: context,
-                                email: _emailController.text,
-                                password: _passwordController.text,
-                              ),
-                            );
+                          LoginWithEmailAndPasswordEvent(
+                            context: context,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ),
+                        );
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -179,6 +180,28 @@ class _LoginPageState extends State<LoginPage> {
                         fontFamily: 'OpenSans Bold',
                       ),
                     ),
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.fingerprint),
+                    label: const Text(
+                      'Login with Fingerprint',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onPressed: () {
+                      context.read<LoginViewModel>().add(
+                        LoginWithFingerprintEvent(context: context),
+                      );
+                    },
                   ),
                 ),
               ],
