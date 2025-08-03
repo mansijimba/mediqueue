@@ -85,7 +85,7 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                                   doctor.name,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w700,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     color: Colors.black87,
                                   ),
                                 ),
@@ -146,12 +146,12 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                             icon: const Icon(
                               Icons.calendar_today_outlined,
                               color: Colors.white,
-                              size: 18,
+                              size: 14,
                             ),
                             label: const Text(
                               'Book',
                               style: TextStyle(
-                                fontSize: 16,
+                                fontSize: 14,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.white,
                               ),
@@ -159,8 +159,8 @@ class _DoctorListScreenState extends State<DoctorListScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.teal,
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 14,
+                                horizontal: 18,
+                                vertical: 10,
                               ),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),

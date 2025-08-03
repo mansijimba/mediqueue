@@ -188,13 +188,12 @@ Future<void> _initAppointmentModule() async {
   );
 
   // ViewModels
-  serviceLocator.registerFactory(
-    () => AppointmentViewModel(
-      getAppointmentsUseCase: serviceLocator<GetUserAppointmentsUseCase>(),
-      bookAppointmentUseCase: serviceLocator<AppointmentBookUseCase>(),
-      cancelAppointmentUseCase: serviceLocator<CancelAppointmentUseCase>(),
-    ),
-  );
+serviceLocator.registerLazySingleton<AppointmentViewModel>(() => AppointmentViewModel(
+  getAppointmentsUseCase: serviceLocator<GetUserAppointmentsUseCase>(),
+  bookAppointmentUseCase: serviceLocator<AppointmentBookUseCase>(),
+  cancelAppointmentUseCase: serviceLocator<CancelAppointmentUseCase>(),
+));
+
 }
 
 Future<void> _initQueueModule() async {

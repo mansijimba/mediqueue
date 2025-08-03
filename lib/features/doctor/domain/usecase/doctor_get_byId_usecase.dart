@@ -7,7 +7,7 @@ import 'package:mediqueue/features/doctor/domain/repository/doctor_repository.da
 
 class DoctorGetByIdParams extends Equatable {
   final String doctorId;
-  DoctorGetByIdParams(this.doctorId);
+  const DoctorGetByIdParams(this.doctorId);
 
   @override
   List<Object?> get props => [doctorId];

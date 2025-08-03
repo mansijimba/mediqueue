@@ -9,7 +9,7 @@ import 'package:mediqueue/features/home/presentation/view_model/home_view_model.
 class MainDashboardEntry extends StatelessWidget {
   final String patientId;
 
-  const MainDashboardEntry({Key? key, required this.patientId}) : super(key: key);
+  const MainDashboardEntry({super.key, required this.patientId});
 
   @override
   Widget build(BuildContext context) {

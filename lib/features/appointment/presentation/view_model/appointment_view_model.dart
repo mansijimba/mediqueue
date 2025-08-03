@@ -25,19 +25,14 @@ class AppointmentViewModel extends Bloc<AppointmentEvent, AppointmentState> {
     Emitter<AppointmentState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final result = await getAppointmentsUseCase(
-      GetUserAppointmentsParams(event.patientId),
-    );
+    final result = await getAppointmentsUseCase(GetUserAppointmentsParams(event.patientId));
     result.fold(
-      (failure) =>
-          emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
-      (appointments) => emit(
-        state.copyWith(
-          isLoading: false,
-          appointments: List.from(appointments),
-          isSuccess: true,
-        ),
-      ),
+      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (appointments) => emit(state.copyWith(
+        isLoading: false,
+        appointments: appointments,
+        isSuccess: true,
+      )),
     );
   }
 
@@ -46,30 +41,23 @@ class AppointmentViewModel extends Bloc<AppointmentEvent, AppointmentState> {
     Emitter<AppointmentState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final result = await bookAppointmentUseCase(
-      AppointmentBookParams(
-        doctorId: event.doctorId,
-        patientId: event.patientId,
-        specialty: event.specialty,
-        date: event.date,
-        time: event.time,
-        type: event.type,
-      ),
-    );
+    final result = await bookAppointmentUseCase(AppointmentBookParams(
+      doctorId: event.doctorId,
+      patientId: event.patientId,
+      specialty: event.specialty,
+      date: event.date,
+      time: event.time,
+      type: event.type,
+    ));
     result.fold(
-      (failure) =>
-          emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
       (appointment) {
-        emit(
-          state.copyWith(
-            isLoading: false,
-            lastBookedAppointment: appointment,
-            isSuccess: true,
-          ),
-        );
-        add(
-          FetchAppointmentsByPatientId(event.patientId),
-        ); // Refresh list after booking
+        emit(state.copyWith(
+          isLoading: false,
+          lastBookedAppointment: appointment,
+          isSuccess: true,
+        ));
+        add(FetchAppointmentsByPatientId(event.patientId)); // Refresh list after booking
       },
     );
   }
@@ -79,18 +67,13 @@ class AppointmentViewModel extends Bloc<AppointmentEvent, AppointmentState> {
     Emitter<AppointmentState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));
-    final result = await cancelAppointmentUseCase(
-      CancelAppointmentParams(event.appointmentId),
-    );
+    final result = await cancelAppointmentUseCase(CancelAppointmentParams(event.appointmentId));
     result.fold(
-      (failure) =>
-          emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
       (_) {
         emit(state.copyWith(isLoading: false, isSuccess: true));
-        add(
-          FetchAppointmentsByPatientId(event.patientId),
-        ); // Refresh list after canceling
-      },
+        add(FetchAppointmentsByPatientId(event.patientId));
+       },
     );
   }
-}
+} 

@@ -34,13 +34,20 @@ class AppointmentRemoteDataSource implements IAppointmentDataSource {
       );
 
       if (response.statusCode == 201) {
-        final data = response.data['appointment'];
-        return AppointmentApiModel.fromJson(data).toEntity();
+        final appointmentData = response.data['appointment'];
+
+        if (appointmentData is Map<String, dynamic>) {
+          return AppointmentApiModel.fromJson(appointmentData).toEntity();
+        } else {
+          throw Exception(
+            // 'Unexpected format: appointment data is not a map. Got: $appointmentData',
+          );
+        }
       } else {
         throw Exception(response.statusMessage ?? 'Failed to book appointment');
       }
-    } on DioException catch (e) {
-      throw Exception('Dio Error: ${e.message}');
+      // } on DioException catch (e) {
+      //   throw Exception('Dio Error: ${e.message}');
     } catch (e) {
       throw Exception('Unexpected Error: $e');
     }
@@ -77,10 +84,7 @@ class AppointmentRemoteDataSource implements IAppointmentDataSource {
   Future<bool> cancelAppointment(String appointmentId) async {
     try {
       final response = await _apiService.dio.post(
-        ApiEndpoints.baseUrl +
-            ApiEndpoints.cancelAppointment +
-            appointmentId +
-            '/cancel',
+        '${ApiEndpoints.baseUrl}${ApiEndpoints.cancelAppointment}$appointmentId/cancel',
       );
 
       if (response.statusCode == 200) {

@@ -10,7 +10,7 @@ import 'package:mediqueue/features/home/presentation/view_model/home_event.dart'
 class DashboardScreen extends StatefulWidget {
   final String patientId;
 
-  const DashboardScreen({Key? key, required this.patientId}) : super(key: key);
+  const DashboardScreen({super.key, required this.patientId});
 
   static const List<BottomNavigationBarItem> _bottomNavItems = [
     BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -24,6 +24,7 @@ class DashboardScreen extends StatefulWidget {
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
+
 
 class _DashboardScreenState extends State<DashboardScreen> {
   String _getGreeting() {
@@ -39,12 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     context.read<HomeViewModel>().setContext(context);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeViewModel, HomeState>(
-      builder: (context, state) {
-        // Wrap DoctorListScreen with heading message
-        final homeView = Column(
+  final homeView = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Padding(
@@ -63,11 +59,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ],
         );
 
-        final views = [
-          homeView,
-          AppointmentListView(patientId: widget.patientId),
-          const ProfileView(),
-        ];
+     @override
+  void initState() {
+    super.initState();
+    views = [
+      homeView,
+      AppointmentListView(patientId: widget.patientId),
+      const ProfileView(),
+    ];
+  }
+
+List<Widget> views = [];
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeViewModel, HomeState>(
+      builder: (context, state) {
+        // Wrap DoctorListScreen with heading message
+      
 
         return Scaffold(
           backgroundColor: Colors.teal.shade50,

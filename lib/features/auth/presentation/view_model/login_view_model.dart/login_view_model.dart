@@ -136,15 +136,6 @@ class LoginViewModel extends Bloc<LoginEvent, LoginState> {
 
       // Check for saved token
       final token = await serviceLocator<TokenSharedPrefs>().getToken();
-      if (token == null) {
-        emit(state.copyWith(isLoading: false));
-        showMySnackBar(
-          context: event.context,
-          message: 'No session found. Please login with email/password first.',
-          color: Colors.orange,
-        );
-        return;
-      }
 
       final userResult = await serviceLocator<UserGetCurrentUsecase>().call();
       await userResult.fold(

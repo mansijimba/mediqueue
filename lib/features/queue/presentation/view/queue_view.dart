@@ -7,7 +7,7 @@ import 'package:mediqueue/features/queue/presentation/view_model/queue_view_mode
 class QueueStatusView extends StatefulWidget {
   final String patientId;
 
-  const QueueStatusView({Key? key, required this.patientId}) : super(key: key);
+  const QueueStatusView({super.key, required this.patientId, required String appointmentId});
 
   @override
   State<QueueStatusView> createState() => _QueueStatusViewState();
